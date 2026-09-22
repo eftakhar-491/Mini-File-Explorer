@@ -1,4 +1,6 @@
-﻿import { create } from "zustand";
+"use client";
+
+import { create } from "zustand";
 import { ROOT_FOLDER_ID } from "@/lib/seedData";
 
 export interface UiState {
@@ -43,7 +45,7 @@ export const useUiStore = create<UiState>((set, get) => ({
   setSelectedFolderId: (id) =>
     set({
       selectedFolderId: id,
-      openFileId: null,
+      openFileId: null, // closing file view to view folder contents
     }),
 
   setOpenFileId: (id) =>

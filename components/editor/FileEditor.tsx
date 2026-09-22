@@ -33,9 +33,11 @@ function FileEditorContent({ file }: FileEditorContentProps) {
   // Local component draft state (initialized directly from file.content)
   const [draftContent, setDraftContent] = React.useState<string>(file.content);
   const [isSaving, setIsSaving] = React.useState(false);
-  const [guardDialogOpen, setGuardDialogOpen] = React.useState(false);
+  const [backPressed, setBackPressed] = React.useState(false);
 
   const isDirty = draftContent !== file.content;
+  // Derived guard modal visibility without useEffect
+  const showGuardDialog = backPressed || pendingAction !== null;
 
   // Sync dirty flag with UI store so outside navigators can query it
   React.useEffect(() => {
@@ -44,13 +46,6 @@ function FileEditorContent({ file }: FileEditorContentProps) {
       setIsEditorDirty(false);
     };
   }, [isDirty, setIsEditorDirty]);
-
-  // If outside navigation was requested while dirty, show the guard dialog
-  React.useEffect(() => {
-    if (pendingAction) {
-      setGuardDialogOpen(true);
-    }
-  }, [pendingAction]);
 
   // Save handler wrapped in useCallback for stable reference
   const handleSave = React.useCallback(() => {
@@ -90,7 +85,7 @@ function FileEditorContent({ file }: FileEditorContentProps) {
   // Attempt to close editor from the back button
   const handleAttemptClose = () => {
     if (isDirty) {
-      setGuardDialogOpen(true);
+      setBackPressed(true);
     } else {
       closeFile();
       if (file.parentId) {
@@ -100,7 +95,7 @@ function FileEditorContent({ file }: FileEditorContentProps) {
   };
 
   const handleConfirmDiscard = () => {
-    setGuardDialogOpen(false);
+    setBackPressed(false);
     if (pendingAction) {
       confirmDiscardNavigation();
     } else {
@@ -113,7 +108,7 @@ function FileEditorContent({ file }: FileEditorContentProps) {
 
   const handleSaveAndClose = () => {
     handleSave();
-    setGuardDialogOpen(false);
+    setBackPressed(false);
     if (pendingAction) {
       confirmDiscardNavigation();
     } else {
@@ -227,10 +222,10 @@ function FileEditorContent({ file }: FileEditorContentProps) {
 
       {/* Navigation Discard Warning Dialog */}
       <UnsavedChangesDialog
-        open={guardDialogOpen}
+        open={showGuardDialog}
         onOpenChange={(open) => {
-          setGuardDialogOpen(open);
           if (!open) {
+            setBackPressed(false);
             cancelPendingNavigation();
           }
         }}

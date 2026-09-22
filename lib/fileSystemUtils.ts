@@ -1,4 +1,3 @@
-import { FileSystemItem, Folder } from "./types";
 import { FileSystemItem, Folder, TreeItem } from "./types";
 import { ROOT_FOLDER_ID } from "./seedData";
 

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import * as React from "react";
 import {
@@ -36,6 +36,7 @@ export const TreeNode = React.memo(function TreeNode({
   const toggleFolder = useUiStore((state) => state.toggleFolder);
   const setSelectedFolderId = useUiStore((state) => state.setSelectedFolderId);
   const setOpenFileId = useUiStore((state) => state.setOpenFileId);
+  const requestNavigation = useUiStore((state) => state.requestNavigation);
 
   if (!item) return null;
 
@@ -47,8 +48,6 @@ export const TreeNode = React.memo(function TreeNode({
 
   const childFolders = children.filter((c) => c.type === "folder");
   const childFiles = children.filter((c) => c.type === "file");
-
-  const requestNavigation = useUiStore((state) => state.requestNavigation);
 
   const handleRowClick = () => {
     requestNavigation(() => {

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import * as React from "react";
 import {
@@ -84,7 +84,7 @@ export default function WorkspacePage() {
           <span className="truncate text-left text-[11px]">
             Search files, folders, content...
           </span>
-          <kbd className="hidden sm:inline-flex items-center gap-0.5 rounded bg-background px-1.5 py-0.2 border text-[10px] font-mono text-muted-foreground/80">
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 rounded bg-background px-1.5 py-px border text-[10px] font-mono text-muted-foreground/80">
             <CommandIcon className="h-2.5 w-2.5" /> K
           </kbd>
         </button>

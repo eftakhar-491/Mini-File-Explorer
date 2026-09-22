@@ -1,7 +1,8 @@
+"use client";
+
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useShallow } from "zustand/react/shallow";
-import { FileSystemItem, Folder, TextFile } from "@/lib/types";
 import { FileSystemItem, Folder, TextFile, TreeItem } from "@/lib/types";
 import { ROOT_FOLDER_ID, SEED_ITEMS } from "@/lib/seedData";
 import {
@@ -163,7 +164,6 @@ export const useFileSystemStore = create<FileSystemState>()(
     }),
     {
       name: "workspace-explorer-fs",
-      storage: createJSONStorage(() => localStorage),
       storage: createJSONStorage(() => dualIndexedDBStorage),
       skipHydration: true,
       onRehydrateStorage: () => (state) => {

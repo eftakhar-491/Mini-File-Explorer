@@ -59,6 +59,11 @@ export function ItemRow({
     });
   };
 
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleOpen();
+  };
+
   const handleStartRename = () => {
     if (onRenameRequest) {
       onRenameRequest(item);
@@ -102,6 +107,7 @@ export function ItemRow({
 
   return (
     <div
+      onDoubleClick={handleDoubleClick}
       onClick={handleOpen}
       className="group flex items-center justify-between h-[38px] px-3 rounded-md hover:bg-muted/60 transition-colors border border-transparent hover:border-border/40 select-none cursor-pointer text-xs"
     >

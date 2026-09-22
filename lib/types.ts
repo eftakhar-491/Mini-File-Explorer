@@ -25,7 +25,7 @@ export type ItemType = "folder" | "file";
 export type TreeItem = {
   id: string;
   name: string;
-  type: "folder" | "file";
+  type: ItemType;
   parentId: string | null;
   createdAt: number;
   updatedAt: number;
