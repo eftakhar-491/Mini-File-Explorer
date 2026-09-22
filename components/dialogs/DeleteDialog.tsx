@@ -15,7 +15,6 @@ import {
 import { useFileSystemStore } from "@/store/useFileSystemStore";
 import { useUiStore } from "@/store/useUiStore";
 import { getDescendantCount, findNearestSurvivingAncestor } from "@/lib/fileSystemUtils";
-import { ROOT_FOLDER_ID } from "@/lib/seedData";
 
 interface DeleteDialogProps {
   open: boolean;
@@ -48,7 +47,6 @@ export function DeleteDialog({
   if (!item) return null;
 
   const isFolder = item.type === "folder";
-  const isRoot = item.id === ROOT_FOLDER_ID;
 
   const handleDelete = () => {
     const deletedIds = deleteItem(item.id);
@@ -82,33 +80,21 @@ export function DeleteDialog({
             </AlertDialogTitle>
           </div>
 
-          <AlertDialogDescription className="text-sm text-muted-foreground space-y-2">
-            <div>
-              Are you sure you want to delete{" "}
-              <span className="font-mono text-foreground font-semibold">
-                &ldquo;{item.name}&rdquo;
-              </span>
-              ?
-            </div>
-
-            {isFolder && descendantCount > 0 && (
-              <div className="p-2.5 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-xs leading-relaxed font-medium">
-                Warning: This folder contains <strong>{descendantCount}</strong> nested{" "}
-                {descendantCount === 1 ? "item" : "items"}. All contents will be permanently
-                deleted.
-              </div>
-            )}
-
-            {isRoot && (
-              <div className="p-2.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs">
-                Note: Deleting the root workspace folder will clear all items. You can restore default items at any time.
-              </div>
-            )}
-
-            <div className="text-xs text-muted-foreground/80">
-              This action cannot be undone.
-            </div>
+          <AlertDialogDescription className="text-sm text-muted-foreground leading-normal">
+            Are you sure you want to delete{" "}
+            <span className="font-mono text-foreground font-semibold">
+              &ldquo;{item.name}&rdquo;
+            </span>
+            ? This action cannot be undone.
           </AlertDialogDescription>
+
+          {isFolder && descendantCount > 0 && (
+            <div className="p-2.5 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-xs leading-relaxed font-medium mt-1">
+              Warning: This folder contains <strong>{descendantCount}</strong> nested{" "}
+              {descendantCount === 1 ? "item" : "items"}. All contents will be permanently
+              deleted.
+            </div>
+          )}
         </AlertDialogHeader>
 
         <AlertDialogFooter className="gap-2 pt-2">
@@ -124,4 +110,3 @@ export function DeleteDialog({
     </AlertDialog>
   );
 }
-

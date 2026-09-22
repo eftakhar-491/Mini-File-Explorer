@@ -1,7 +1,6 @@
 "use client";
 
 import { create } from "zustand";
-import { ROOT_FOLDER_ID } from "@/lib/seedData";
 
 export interface UiState {
   selectedFolderId: string | null;
@@ -34,9 +33,9 @@ export interface UiState {
 }
 
 export const useUiStore = create<UiState>((set, get) => ({
-  selectedFolderId: ROOT_FOLDER_ID,
+  selectedFolderId: null,
   openFileId: null,
-  expandedFolderIds: [ROOT_FOLDER_ID, "folder-projects"],
+  expandedFolderIds: [],
   sidebarOpen: false,
   searchOpen: false,
   isEditorDirty: false,

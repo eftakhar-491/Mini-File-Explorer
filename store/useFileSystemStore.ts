@@ -4,7 +4,6 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useShallow } from "zustand/react/shallow";
 import { FileSystemItem, Folder, TextFile, TreeItem } from "@/lib/types";
-import { SEED_ITEMS } from "@/lib/seedData";
 import {
   getChildren,
   getPath,
@@ -37,7 +36,7 @@ function generateId(prefix: "folder" | "file"): string {
 
 export const useFileSystemStore = create<FileSystemState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       items: {},
       hasHydrated: false,
 
@@ -147,15 +146,11 @@ export const useFileSystemStore = create<FileSystemState>()(
       },
 
       seedIfEmpty: () => {
-        const { items } = get();
-        // Check if items map is empty
-        if (!items || Object.keys(items).length === 0) {
-          set({ items: { ...SEED_ITEMS } });
-        }
+        // No automatic seed data initially
       },
 
       resetToDefault: () => {
-        set({ items: { ...SEED_ITEMS } });
+        set({ items: {} });
       },
 
       setHasHydrated: (hydrated: boolean) => {
@@ -163,12 +158,11 @@ export const useFileSystemStore = create<FileSystemState>()(
       },
     }),
     {
-      name: "workspace-explorer-fs",
+      name: "workspace-explorer-fs-v3",
       storage: createJSONStorage(() => dualIndexedDBStorage),
       skipHydration: true,
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
-        state?.seedIfEmpty();
       },
     }
   )

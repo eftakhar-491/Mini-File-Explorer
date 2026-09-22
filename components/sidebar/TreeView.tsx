@@ -21,7 +21,6 @@ import { TreeNode } from "./TreeNode";
 import { useFileSystemStore, useChildren, useItem } from "@/store/useFileSystemStore";
 import { useUiStore } from "@/store/useUiStore";
 import { CreateItemDialog } from "@/components/dialogs/CreateItemDialog";
-import { ROOT_FOLDER_ID } from "@/lib/seedData";
 import { ItemType } from "@/lib/types";
 
 export function TreeView() {
@@ -60,11 +59,8 @@ export function TreeView() {
   };
 
   const handleCollapseAll = () => {
-    // Keep root folder expanded
     expandedFolderIds.forEach((id) => {
-      if (id !== ROOT_FOLDER_ID) {
-        collapseFolder(id);
-      }
+      collapseFolder(id);
     });
   };
 
@@ -180,16 +176,27 @@ export function TreeView() {
       >
         {rootItems.length === 0 ? (
           <div className="p-4 text-center text-xs text-muted-foreground space-y-3">
-            <p>No workspace items found.</p>
-            <Button
-              variant="outline"
-              size="xs"
-              onClick={resetToDefault}
-              className="text-xs"
-            >
-              <RotateCcw className="h-3 w-3 mr-1" />
-              Reset Workspace
-            </Button>
+            <p>No folders or files yet.</p>
+            <div className="flex flex-col gap-1.5 pt-1">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleQuickCreate(null, "folder")}
+                className="h-7 text-xs gap-1.5 justify-start border-border/80 hover:bg-accent/60"
+              >
+                <FolderPlus className="h-3.5 w-3.5 text-primary" />
+                <span>New Folder</span>
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleQuickCreate(null, "file")}
+                className="h-7 text-xs gap-1.5 justify-start text-muted-foreground hover:text-foreground"
+              >
+                <FilePlus className="h-3.5 w-3.5 text-muted-foreground" />
+                <span>New File</span>
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="space-y-0.5">

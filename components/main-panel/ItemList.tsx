@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Folder, FolderPlus, FilePlus, RotateCcw } from "lucide-react";
+import { Folder, FolderPlus, FilePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ItemRow } from "./ItemRow";
-import { useChildren, useItem, useFileSystemStore } from "@/store/useFileSystemStore";
+import { useChildren, useItem } from "@/store/useFileSystemStore";
 import { useUiStore } from "@/store/useUiStore";
 import { RenameDialog } from "@/components/dialogs/RenameDialog";
 import { DeleteDialog } from "@/components/dialogs/DeleteDialog";
@@ -15,7 +15,6 @@ export function ItemList() {
   const selectedFolderId = useUiStore((state) => state.selectedFolderId);
   const currentFolder = useItem(selectedFolderId);
   const items = useChildren(selectedFolderId);
-  const resetToDefault = useFileSystemStore((state) => state.resetToDefault);
 
   // Dialog state
   const [renameTarget, setRenameTarget] = React.useState<FileSystemItem | null>(null);
@@ -54,11 +53,11 @@ export function ItemList() {
 
             <div className="max-w-xs space-y-1">
               <h3 className="text-sm font-semibold text-foreground">
-                {isWorkspaceEmpty ? "Workspace is empty" : "This folder is empty"}
+                {isWorkspaceEmpty ? "No folders or files" : "This folder is empty"}
               </h3>
               <p className="text-xs text-muted-foreground">
                 {isWorkspaceEmpty
-                  ? "All folders and files have been removed. You can create new items or restore the sample workspace."
+                  ? "Create your first folder or file in Explorer to get started."
                   : `Create your first file or folder in ${currentFolder?.name || "this folder"} to get started.`}
               </p>
             </div>
@@ -82,17 +81,6 @@ export function ItemList() {
                 <FolderPlus className="h-3.5 w-3.5" />
                 New Folder
               </Button>
-              {isWorkspaceEmpty && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={resetToDefault}
-                  className="h-8 text-xs font-medium gap-1.5 text-muted-foreground"
-                >
-                  <RotateCcw className="h-3.5 w-3.5" />
-                  Restore Defaults
-                </Button>
-              )}
             </div>
           </div>
         ) : (

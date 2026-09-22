@@ -70,7 +70,7 @@ export function Toolbar() {
         </Button>
 
         {/* Desktop Rename & Delete current folder */}
-        <div className="hidden sm:flex items-center gap-1.5 pl-1">
+        {/* <div className="hidden sm:flex items-center gap-1.5 pl-1">
           <Button
             variant="ghost"
             size="sm"
@@ -94,7 +94,7 @@ export function Toolbar() {
             <Trash2 className="h-3.5 w-3.5" />
             <span>Delete Folder</span>
           </Button>
-        </div>
+        </div> */}
 
         {/* Mobile Overflow Menu */}
         <div className="sm:hidden">
