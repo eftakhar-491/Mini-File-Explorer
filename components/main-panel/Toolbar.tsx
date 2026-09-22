@@ -7,7 +7,6 @@ import {
   Edit2,
   Trash2,
   MoreHorizontal,
-  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +26,6 @@ import { ItemType } from "@/lib/types";
 
 export function Toolbar() {
   const selectedFolderId = useUiStore((state) => state.selectedFolderId);
-  const setSearchOpen = useUiStore((state) => state.setSearchOpen);
   const currentFolder = useItem(selectedFolderId);
   const children = useChildren(selectedFolderId);
 

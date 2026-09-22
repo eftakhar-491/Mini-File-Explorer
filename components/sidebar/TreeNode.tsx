@@ -6,26 +6,18 @@ import {
   Folder,
   FolderOpen,
   FileText,
-  Plus,
 } from "lucide-react";
 import { useChildren, useItem } from "@/store/useFileSystemStore";
 import { useUiStore } from "@/store/useUiStore";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 interface TreeNodeProps {
   itemId: string;
   depth?: number;
-  onQuickCreate?: (parentId: string) => void;
 }
 
 export const TreeNode = React.memo(function TreeNode({
   itemId,
   depth = 0,
-  onQuickCreate,
 }: TreeNodeProps) {
   const item = useItem(itemId);
   const children = useChildren(itemId);
@@ -69,11 +61,6 @@ export const TreeNode = React.memo(function TreeNode({
   const handleChevronClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     toggleFolder(itemId);
-  };
-
-  const handleQuickCreate = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onQuickCreate?.(itemId);
   };
 
   return (
@@ -128,27 +115,6 @@ export const TreeNode = React.memo(function TreeNode({
         >
           {item.name}
         </span>
-
-        {/* Quick actions on hover */}
-        {isFolder && onQuickCreate && (
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <button
-                  type="button"
-                  onClick={handleQuickCreate}
-                  className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-foreground/10 text-muted-foreground hover:text-foreground transition-opacity"
-                  aria-label="New item in folder"
-                >
-                  <Plus className="h-3 w-3" />
-                </button>
-              }
-            />
-            <TooltipContent side="right">
-              <p className="text-[11px]">New item in {item.name}</p>
-            </TooltipContent>
-          </Tooltip>
-        )}
       </div>
 
       {/* Children with smooth transition */}
@@ -164,7 +130,6 @@ export const TreeNode = React.memo(function TreeNode({
                 key={child.id}
                 itemId={child.id}
                 depth={depth + 1}
-                onQuickCreate={onQuickCreate}
               />
             ))}
             {childFiles.map((child) => (
@@ -172,7 +137,6 @@ export const TreeNode = React.memo(function TreeNode({
                 key={child.id}
                 itemId={child.id}
                 depth={depth + 1}
-                onQuickCreate={onQuickCreate}
               />
             ))}
           </div>
@@ -181,4 +145,3 @@ export const TreeNode = React.memo(function TreeNode({
     </div>
   );
 });
-

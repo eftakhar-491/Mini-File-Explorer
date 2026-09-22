@@ -5,7 +5,6 @@ import {
   Menu,
   HardDrive,
   Command as CommandIcon,
-  HelpCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,11 +14,6 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { TreeView } from "@/components/sidebar/TreeView";
 import { BreadcrumbBar } from "@/components/main-panel/BreadcrumbBar";
 import { Toolbar } from "@/components/main-panel/Toolbar";

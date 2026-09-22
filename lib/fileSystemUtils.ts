@@ -1,10 +1,6 @@
 import { FileSystemItem, Folder, TreeItem } from "./types";
 import { ROOT_FOLDER_ID } from "./seedData";
 
-/**
- * Returns the immediate children of parentId.
- * Sorted: Folders first (A-Z), then Files (A-Z), case-insensitive.
- */
 export function getChildren(
   items: Record<string, FileSystemItem>,
   parentId: string | null
@@ -28,15 +24,7 @@ export function getChildren(
   });
 }
 
-/**
- * Builds a hierarchical nested tree from the flat Record<string, FileSystemItem>
- * using an easy, readable recursive function.
- *
- * @param items Flat dictionary of all filesystem items
- * @param parentId The parent ID to start from (default null for workspace root level)
- * @param depth Current recursion depth (default 0)
- * @returns Array of nested TreeItem nodes with child trees
- */
+
 export function buildTree(
   items: Record<string, FileSystemItem>,
   parentId: string | null = null,
@@ -64,10 +52,7 @@ export function buildTree(
   });
 }
 
-/**
- * Derives the folder path hierarchy from the root to the given item/folder.
- * Returns an array of Folder objects in root-first order.
- */
+
 export function getPath(
   items: Record<string, FileSystemItem>,
   id: string | null
@@ -90,9 +75,7 @@ export function getPath(
   return path;
 }
 
-/**
- * Returns a human-readable path string like "/Workspace/Projects/Webbly/notes.txt"
- */
+
 export function getPathString(
   items: Record<string, FileSystemItem>,
   id: string | null
@@ -113,10 +96,6 @@ export function getPathString(
   return "/" + segments.join("/");
 }
 
-/**
- * Returns an array of all ancestor folder IDs for a given item,
- * starting from the root down to the item's immediate parent.
- */
 export function getAncestorIds(
   items: Record<string, FileSystemItem>,
   id: string
@@ -137,10 +116,6 @@ export function getAncestorIds(
   return ancestorIds;
 }
 
-/**
- * Recursively retrieves all descendant IDs of an item.
- * O(N) traversal.
- */
 export function getDescendantIds(
   items: Record<string, FileSystemItem>,
   id: string
@@ -166,9 +141,6 @@ export function getDescendantIds(
   return descendants;
 }
 
-/**
- * Returns the count of all nested items (children, grandchildren, etc.).
- */
 export function getDescendantCount(
   items: Record<string, FileSystemItem>,
   id: string
@@ -176,13 +148,6 @@ export function getDescendantCount(
   return getDescendantIds(items, id).length;
 }
 
-/**
- * Validates a new or updated item name.
- * Disallows:
- * - Empty / whitespace-only names
- * - Invalid filesystem characters (/ \ : * ? " < > |)
- * - Duplicate names in the same parent (case-insensitive)
- */
 export function validateName(
   name: string,
   parentId: string | null,
@@ -233,9 +198,6 @@ export type SearchResult = {
   snippet?: string;
 };
 
-/**
- * Searches items by case-insensitive substring match across all items in the workspace.
- */
 export function searchItems(
   items: Record<string, FileSystemItem>,
   query: string
@@ -281,10 +243,6 @@ export function searchItems(
   });
 }
 
-/**
- * Given a set of deleted IDs and the currently active folder ID,
- * returns the nearest surviving ancestor folder ID or ROOT_FOLDER_ID.
- */
 export function findNearestSurvivingAncestor(
   items: Record<string, FileSystemItem>,
   deletedIds: Set<string>,
@@ -313,9 +271,6 @@ export function findNearestSurvivingAncestor(
   return ROOT_FOLDER_ID;
 }
 
-/**
- * Formats a timestamp into a clean compact date/time string.
- */
 export function formatDate(timestamp: number): string {
   const date = new Date(timestamp);
   return date.toLocaleDateString("en-US", {
@@ -326,9 +281,7 @@ export function formatDate(timestamp: number): string {
   });
 }
 
-/**
- * Formats file size based on content character length.
- */
+
 export function formatSize(contentLength: number): string {
   if (contentLength < 1024) {
     return `${contentLength} B`;

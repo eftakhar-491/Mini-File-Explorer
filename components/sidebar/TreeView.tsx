@@ -154,7 +154,6 @@ export function TreeView() {
                 key={item.id}
                 itemId={item.id}
                 depth={0}
-                onQuickCreate={(pid) => handleQuickCreate(pid, "folder")}
               />
             ))}
           </div>
