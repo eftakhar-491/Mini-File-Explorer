@@ -21,7 +21,6 @@ import { useItem, useChildren } from "@/store/useFileSystemStore";
 import { CreateItemDialog } from "@/components/dialogs/CreateItemDialog";
 import { RenameDialog } from "@/components/dialogs/RenameDialog";
 import { DeleteDialog } from "@/components/dialogs/DeleteDialog";
-import { ROOT_FOLDER_ID } from "@/lib/seedData";
 import { ItemType } from "@/lib/types";
 
 export function Toolbar() {
@@ -35,7 +34,7 @@ export function Toolbar() {
   const [renameOpen, setRenameOpen] = React.useState(false);
   const [deleteOpen, setDeleteOpen] = React.useState(false);
 
-  const isRoot = !selectedFolderId || selectedFolderId === ROOT_FOLDER_ID;
+  const isRoot = !selectedFolderId;
   const canModifySelected = !isRoot && currentFolder !== null;
 
   const folderCount = children.filter((c) => c.type === "folder").length;
@@ -78,7 +77,7 @@ export function Toolbar() {
             onClick={() => setRenameOpen(true)}
             disabled={!canModifySelected}
             className="h-8 text-xs text-muted-foreground hover:text-foreground gap-1.5"
-            title={isRoot ? "Root workspace cannot be renamed" : "Rename this folder"}
+            title={isRoot ? "Explorer root cannot be renamed" : "Rename this folder"}
           >
             <Edit2 className="h-3.5 w-3.5" />
             <span>Rename Folder</span>
@@ -90,7 +89,7 @@ export function Toolbar() {
             onClick={() => setDeleteOpen(true)}
             disabled={!canModifySelected}
             className="h-8 text-xs text-muted-foreground hover:text-destructive gap-1.5"
-            title={isRoot ? "Root workspace cannot be deleted" : "Delete this folder"}
+            title={isRoot ? "Explorer root cannot be deleted" : "Delete this folder"}
           >
             <Trash2 className="h-3.5 w-3.5" />
             <span>Delete Folder</span>

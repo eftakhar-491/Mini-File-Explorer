@@ -19,7 +19,6 @@ import { Badge } from "@/components/ui/badge";
 import { useFileSystemStore } from "@/store/useFileSystemStore";
 import { useUiStore } from "@/store/useUiStore";
 import { searchItems, getAncestorIds, SearchResult } from "@/lib/fileSystemUtils";
-import { ROOT_FOLDER_ID } from "@/lib/seedData";
 
 export function SearchCommand() {
   const [query, setQuery] = React.useState("");
@@ -73,7 +72,7 @@ export function SearchCommand() {
       if (item.type === "folder") {
         navigateToFolder(item.id, ancestors);
       } else {
-        navigateToFile(item.id, item.parentId || ROOT_FOLDER_ID, ancestors);
+        navigateToFile(item.id, item.parentId, ancestors);
       }
     });
   };

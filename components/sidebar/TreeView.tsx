@@ -14,10 +14,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TreeNode } from "./TreeNode";
-import { useFileSystemStore, useChildren } from "@/store/useFileSystemStore";
+import { useFileSystemStore, useChildren, useItem } from "@/store/useFileSystemStore";
 import { useUiStore } from "@/store/useUiStore";
 import { CreateItemDialog } from "@/components/dialogs/CreateItemDialog";
 import { ROOT_FOLDER_ID } from "@/lib/seedData";
@@ -26,19 +27,29 @@ import { ItemType } from "@/lib/types";
 export function TreeView() {
   const [createDialogOpen, setCreateDialogOpen] = React.useState(false);
   const [createType, setCreateType] = React.useState<ItemType>("folder");
-  const [targetParentId, setTargetParentId] = React.useState<string | null>(ROOT_FOLDER_ID);
+  const [targetParentId, setTargetParentId] = React.useState<string | null>(null);
 
   const rootItems = useChildren(null);
   const resetToDefault = useFileSystemStore((state) => state.resetToDefault);
   const selectedFolderId = useUiStore((state) => state.selectedFolderId);
+  const setSelectedFolderId = useUiStore((state) => state.setSelectedFolderId);
+  const requestNavigation = useUiStore((state) => state.requestNavigation);
   const expandFolders = useUiStore((state) => state.expandFolders);
   const collapseFolder = useUiStore((state) => state.collapseFolder);
   const expandedFolderIds = useUiStore((state) => state.expandedFolderIds);
 
-  const handleQuickCreate = (parentId: string, type: ItemType = "folder") => {
+  const selectedFolder = useItem(selectedFolderId);
+
+  const handleQuickCreate = (parentId: string | null, type: ItemType = "folder") => {
     setTargetParentId(parentId);
     setCreateType(type);
     setCreateDialogOpen(true);
+  };
+
+  const handleNavigateRoot = () => {
+    requestNavigation(() => {
+      setSelectedFolderId(null);
+    });
   };
 
   const handleExpandAll = () => {
@@ -62,9 +73,18 @@ export function TreeView() {
       {/* Sidebar Header */}
       <div className="flex items-center justify-between px-3 h-10 border-b border-sidebar-border/60 shrink-0">
         <div className="flex items-center gap-1.5">
-          <span className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground">
+          <button
+            type="button"
+            onClick={handleNavigateRoot}
+            className={`text-[11px] uppercase tracking-wider font-semibold transition-colors cursor-pointer hover:text-foreground ${
+              selectedFolderId === null
+                ? "text-foreground font-bold underline underline-offset-4"
+                : "text-muted-foreground"
+            }`}
+            title="Navigate to Explorer Root"
+          >
             Explorer
-          </span>
+          </button>
         </div>
 
         <div className="flex items-center gap-0.5">
@@ -83,13 +103,13 @@ export function TreeView() {
               }
             />
             <DropdownMenuContent align="end" className="text-xs">
-              <DropdownMenuItem onClick={handleExpandAll}>
+              <DropdownMenuItem onClick={handleExpandAll} className="cursor-pointer">
                 Expand All Folders
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleCollapseAll}>
+              <DropdownMenuItem onClick={handleCollapseAll} className="cursor-pointer">
                 Collapse All Folders
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={resetToDefault} className="text-muted-foreground">
+              <DropdownMenuItem onClick={resetToDefault} className="text-muted-foreground cursor-pointer">
                 <RotateCcw className="h-3 w-3 mr-1.5" />
                 Reset Default Files
               </DropdownMenuItem>
@@ -112,28 +132,52 @@ export function TreeView() {
             />
             <DropdownMenuContent align="end" className="text-xs">
               <DropdownMenuItem
-                onClick={() =>
-                  handleQuickCreate(selectedFolderId || ROOT_FOLDER_ID, "folder")
-                }
+                onClick={() => handleQuickCreate(null, "folder")}
+                className="cursor-pointer"
               >
                 <FolderPlus className="h-3.5 w-3.5 mr-1.5 text-primary" />
-                New Folder
+                New Folder in Explorer (Root)
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() =>
-                  handleQuickCreate(selectedFolderId || ROOT_FOLDER_ID, "file")
-                }
+                onClick={() => handleQuickCreate(null, "file")}
+                className="cursor-pointer"
               >
                 <FilePlus className="h-3.5 w-3.5 mr-1.5 text-muted-foreground" />
-                New File
+                New File in Explorer (Root)
               </DropdownMenuItem>
+              {selectedFolderId && selectedFolder && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => handleQuickCreate(selectedFolderId, "folder")}
+                    className="cursor-pointer"
+                  >
+                    <FolderPlus className="h-3.5 w-3.5 mr-1.5 text-muted-foreground" />
+                    New Folder in {selectedFolder.name}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleQuickCreate(selectedFolderId, "file")}
+                    className="cursor-pointer"
+                  >
+                    <FilePlus className="h-3.5 w-3.5 mr-1.5 text-muted-foreground" />
+                    New File in {selectedFolder.name}
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
 
       {/* Tree Content Area */}
-      <ScrollArea className="flex-1 px-1 py-1.5">
+      <ScrollArea
+        className="flex-1 px-1 py-1.5 cursor-default"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            handleNavigateRoot();
+          }
+        }}
+      >
         {rootItems.length === 0 ? (
           <div className="p-4 text-center text-xs text-muted-foreground space-y-3">
             <p>No workspace items found.</p>
@@ -170,4 +214,3 @@ export function TreeView() {
     </div>
   );
 }
-

@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useShallow } from "zustand/react/shallow";
 import { FileSystemItem, Folder, TextFile, TreeItem } from "@/lib/types";
-import { ROOT_FOLDER_ID, SEED_ITEMS } from "@/lib/seedData";
+import { SEED_ITEMS } from "@/lib/seedData";
 import {
   getChildren,
   getPath,
@@ -148,8 +148,8 @@ export const useFileSystemStore = create<FileSystemState>()(
 
       seedIfEmpty: () => {
         const { items } = get();
-        // Check if root exists or if empty
-        if (!items || Object.keys(items).length === 0 || !items[ROOT_FOLDER_ID]) {
+        // Check if items map is empty
+        if (!items || Object.keys(items).length === 0) {
           set({ items: { ...SEED_ITEMS } });
         }
       },

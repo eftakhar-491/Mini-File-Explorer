@@ -1,5 +1,4 @@
 import { FileSystemItem, Folder, TreeItem } from "./types";
-import { ROOT_FOLDER_ID } from "./seedData";
 
 export function getChildren(
   items: Record<string, FileSystemItem>,
@@ -80,7 +79,7 @@ export function getPathString(
   items: Record<string, FileSystemItem>,
   id: string | null
 ): string {
-  if (!id || !items[id]) return "/";
+  if (!id || !items[id]) return "Explorer";
 
   const segments: string[] = [];
   let current: FileSystemItem | undefined = items[id];
@@ -93,7 +92,7 @@ export function getPathString(
     current = items[current.parentId];
   }
 
-  return "/" + segments.join("/");
+  return "Explorer / " + segments.join(" / ");
 }
 
 export function getAncestorIds(
@@ -247,9 +246,9 @@ export function findNearestSurvivingAncestor(
   items: Record<string, FileSystemItem>,
   deletedIds: Set<string>,
   currentFolderId: string | null
-): string {
+): string | null {
   if (!currentFolderId || !deletedIds.has(currentFolderId)) {
-    return currentFolderId || ROOT_FOLDER_ID;
+    return currentFolderId;
   }
 
   let current: FileSystemItem | undefined = items[currentFolderId];
@@ -261,14 +260,8 @@ export function findNearestSurvivingAncestor(
     current = items[pid];
   }
 
-  // If even root was deleted, find any remaining folder or ROOT_FOLDER_ID
-  for (const id in items) {
-    if (!deletedIds.has(id) && items[id].type === "folder") {
-      return id;
-    }
-  }
-
-  return ROOT_FOLDER_ID;
+  // If deleted item was a root item or all ancestors deleted, fall back to Explorer root (null)
+  return null;
 }
 
 export function formatDate(timestamp: number): string {

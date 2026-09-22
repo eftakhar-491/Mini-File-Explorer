@@ -30,7 +30,7 @@ export interface UiState {
 
   // Composite navigators
   navigateToFolder: (id: string, ancestorIds?: string[]) => void;
-  navigateToFile: (fileId: string, parentFolderId: string, ancestorIds?: string[]) => void;
+  navigateToFile: (fileId: string, parentFolderId: string | null, ancestorIds?: string[]) => void;
 }
 
 export const useUiStore = create<UiState>((set, get) => ({
@@ -128,8 +128,11 @@ export const useUiStore = create<UiState>((set, get) => ({
 
   navigateToFile: (fileId, parentFolderId, ancestorIds = []) =>
     set((state) => {
+      const folderIdsToExpand = [parentFolderId, ...ancestorIds].filter(
+        (id): id is string => Boolean(id)
+      );
       const uniqueExpanded = Array.from(
-        new Set([...state.expandedFolderIds, parentFolderId, ...ancestorIds])
+        new Set([...state.expandedFolderIds, ...folderIdsToExpand])
       );
       return {
         selectedFolderId: parentFolderId,
