@@ -19,11 +19,6 @@ cd workspace-explorer
 
 # Install dependencies
 npm install
-
-# (For reference: core packages installed)
-# npm install zustand lucide-react next-themes clsx tailwind-merge class-variance-authority
-# npx shadcn@latest init
-# npx shadcn@latest add button input dialog alert-dialog sheet tooltip scroll-area breadcrumb skeleton command dropdown-menu separator badge
 ```
 
 ### 2. Development & Production Commands
@@ -31,30 +26,10 @@ npm install
 ```bash
 # Run local development server (Turbopack)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-
-# Run ESLint validation
-npm run lint
-
-# Build for production
-npm run build
-
 # Start production server
 npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
----
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 ## 📁 Project Structure
 
 ## Learn More
@@ -100,15 +75,7 @@ file-manage/
     └── useUiStore.ts            # Ephemeral Zustand store for UI selection, editor state, sidebar & search
 ```
 
-To learn more about Next.js, take a look at the following resources:
----
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-## 🧠 State Management & Architecture
-## 🧠 State Management & Dual Persistence (IndexedDB + LocalStorage)
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 ### Dual Store Architecture
 
 ## Deploy on Vercel

@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -17,6 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Mini Workspace Explorer",
   description: "A production-quality browser-based file manager built with Next.js, Zustand, and shadcn/ui",
+  icons: {
+    icon: "/fav-icon.svg",
+    shortcut: "/fav-icon.svg",
+    apple: "/fav-icon.svg",
+  },
 };
 
 export default function RootLayout({
