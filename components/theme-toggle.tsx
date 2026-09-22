@@ -23,7 +23,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon-sm" className="h-8 w-8 opacity-70">
+      <Button variant="ghost" size="icon-sm" className="h-8 w-8 opacity-70 cursor-pointer">
         <span className="sr-only">Toggle theme</span>
       </Button>
     );

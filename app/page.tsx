@@ -91,7 +91,7 @@ export default function WorkspacePage() {
 
         {/* Right: Shortcuts helper & Theme Toggle */}
         <div className="flex items-center gap-1">
-          <Tooltip>
+          {/* <Tooltip>
             <TooltipTrigger
               render={
                 <Button
@@ -119,7 +119,7 @@ export default function WorkspacePage() {
                 <span className="font-mono text-[10px]">Double click</span>
               </div>
             </TooltipContent>
-          </Tooltip>
+          </Tooltip> */}
 
           <ThemeToggle />
         </div>

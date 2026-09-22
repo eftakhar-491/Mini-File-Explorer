@@ -139,7 +139,7 @@ export function Toolbar() {
 
       {/* Right side: Search shortcut trigger & item counter */}
       <div className="flex items-center gap-3 shrink-0">
-        <button
+        {/* <button
           type="button"
           onClick={() => setSearchOpen(true)}
           className="flex items-center gap-2 h-7 px-2.5 rounded-md border border-input/60 bg-muted/30 hover:bg-muted/70 text-muted-foreground hover:text-foreground transition-colors text-[11px] font-sans"
@@ -149,7 +149,7 @@ export function Toolbar() {
           <kbd className="hidden md:inline-flex items-center gap-0.5 rounded bg-background px-1.5 py-0.2 border text-[10px] font-mono">
             ⌘K
           </kbd>
-        </button>
+        </button> */}
 
         <span className="text-[11px] text-muted-foreground/80 font-mono hidden lg:inline">
           {folderCount} {folderCount === 1 ? "folder" : "folders"},{" "}
